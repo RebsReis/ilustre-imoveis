@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ilustre Móveis — proposta de site (protótipo)</title>
+<meta name="description" content="Protótipo de redesign do site da Ilustre Móveis. Não é o site oficial.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Manrope:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* VOICE: sofisticada, acolhedora, autoral — Ilustre Móveis, desde 1991
+   IDEA: catálogo editorial impresso (estrutura Harper Ave): foto inteira, nome gigante, coluna estreita
+   PICTURE: fotografias de borda a borda (slots para as fotos reais da Ilustre)
+   COLOUR/TYPE: marfim, areia, carvão, terracota pontual · Manrope + Inter
+   LAYOUT: blocos full-bleed alternados com colunas estreitas, mobile-first */
+body{margin:0;background:#F7F5F1;color:#292724;font-family:"Inter",system-ui,sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:clip}
+*{box-sizing:border-box;min-width:0}
+a{color:#986349}a:hover{color:#292724}
+h1,h2,h3{font-family:"Manrope",system-ui,sans-serif;font-weight:400;letter-spacing:-0.03em;margin:0;text-wrap:balance}
+.wrap{max-width:1440px;margin:0 auto;padding-inline:20px}
+.bleed{padding-inline:8px}
+.sec{padding-block:64px}
+.h2{font-size:clamp(1.875rem,1.52rem + 1.5vw,2.75rem);line-height:1.15}
+.h3{font-size:clamp(1.5rem,1.4rem + 0.4vw,1.75rem);line-height:1.25;font-weight:500}
+.lead{font-size:clamp(1.125rem,1.07rem + 0.2vw,1.25rem);line-height:1.6}
+.label{font-size:12px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;line-height:1.4}
+.muted{color:#68625B}
+.small{font-size:14px;line-height:1.5}
+.col{max-width:48ch}
+.mark{font-family:"Manrope",sans-serif;font-weight:400;letter-spacing:-0.055em;line-height:0.8;font-size:clamp(4.75rem,23vw,22.5rem);white-space:nowrap;display:flex;align-items:flex-start;gap:0.04em}
+.mark sup{font-size:0.15em;letter-spacing:-0.02em;font-weight:300;line-height:1;margin-top:0.35em}
+.model{font-family:"Manrope",sans-serif;font-weight:300;letter-spacing:-0.06em;line-height:0.85;font-size:clamp(4.5rem,18vw,17rem);display:flex;flex-wrap:wrap;gap:0 0.18em;align-items:baseline}
+.model sup{font-size:0.2em;font-weight:400;letter-spacing:-0.02em}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 24px;border-radius:2px;font:500 14px/1 "Inter",sans-serif;text-decoration:none;cursor:pointer;border:1px solid #292724;transition:background-color 180ms cubic-bezier(.22,1,.36,1),color 180ms,border-color 180ms}
+.btn-p{background:#292724;color:#fff}.btn-p:hover{background:#413D38;border-color:#413D38;color:#fff}
+.btn-s{background:transparent;color:#292724}.btn-s:hover{background:#292724;color:#fff}
+.btn-l{background:#fff;color:#292724;border-color:#fff}.btn-l:hover{background:#EDE8E1;border-color:#EDE8E1;color:#292724}
+.btn:focus-visible,.lk:focus-visible,.seg:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,.nv a:focus-visible,.gal:focus-visible,.pc:focus-visible{outline:2px solid #292724;outline-offset:3px}
+.lk{display:inline-flex;gap:8px;align-items:center;color:#292724;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:6px;font-weight:500;font-size:14px}
+.lk:hover{color:#986349}
+.ph{position:relative;overflow:hidden;border-radius:4px;background:#EDE8E1}
+.ph-in{position:absolute;inset:-6% 0;transition:transform 500ms cubic-bezier(.22,1,.36,1)}
+.ph-tag{position:absolute;left:12px;bottom:12px;background:rgba(247,245,241,.92);color:#68625B;font-size:12px;padding:4px 8px;border-radius:2px;z-index:2}
+.hover-z:hover .ph-in,.pc:hover .ph-in{transform:scale(1.03)}
+.ph-img{position:absolute;left:0;top:-6%;width:100%;height:112%;object-fit:cover;display:block;transition:transform 500ms cubic-bezier(.22,1,.36,1)}
+.ph-img.ct{top:0;height:100%;object-fit:contain;padding:6%;background:#fff}
+.pc:hover .ph-img,.hover-z:hover .ph-img{transform:scale(1.03)}
+.shade{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(41,39,36,.55) 0%,rgba(41,39,36,0) 28%)}
+.shade-b{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(0deg,rgba(41,39,36,.6) 0%,rgba(41,39,36,0) 45%)}
+.two{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+.two .ph{aspect-ratio:4/5}
+.nv{position:absolute;top:16px;left:16px;right:16px;display:flex;justify-content:space-between;align-items:center;gap:16px;z-index:3;color:#fff}
+.nv a{color:#fff;text-decoration:none;font-size:14px;padding:12px 4px;display:inline-block}
+.nv a:hover{text-decoration:underline;text-underline-offset:5px}
+.nv-links{display:flex;gap:0 8px;flex-wrap:wrap;justify-content:flex-end;align-items:center}
+.nv-sep{opacity:.6}
+.hero{aspect-ratio:4/5}
+.full{aspect-ratio:4/5}
+.full2{aspect-ratio:1/1}
+.collage{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:16px}
+.pgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 16px}
+.pc{display:flex;flex-direction:column;gap:10px;text-decoration:none;color:#292724}
+.pc .ph{aspect-ratio:4/5}
+.cats{display:flex;flex-wrap:wrap;gap:8px}
+.man{display:grid;grid-template-columns:minmax(0,1fr);gap:40px}
+.svc{display:grid;grid-template-columns:minmax(0,1fr);gap:0}
+.svc>div{border-top:1px solid #DCD5CC;padding:24px 0;display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+.tech{background:#FFFFFF;border-radius:4px;padding:20px;display:flex;flex-direction:column;gap:32px;box-shadow:0 16px 48px rgba(41,39,36,.12)}
+.spec{width:100%;border-collapse:collapse}
+.spec th,.spec td{text-align:left;padding:14px 0;border-top:1px solid #DCD5CC;vertical-align:top;font-size:14px}
+.spec th{font-weight:500;width:32%;padding-right:16px}
+.seg{min-height:44px;padding:0 16px;border:1px solid #DCD5CC;background:#fff;color:#292724;border-radius:2px;font:500 14px/1 "Inter",sans-serif;cursor:pointer}
+.seg[aria-pressed="true"]{background:#292724;color:#fff;border-color:#292724}
+.gal{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.gal::-webkit-scrollbar{display:none}
+.gal>figure{flex:0 0 100%;scroll-snap-align:start;margin:0;position:relative}
+.gal .ph{aspect-ratio:4/5;border-radius:0}
+.ov{position:absolute;inset:auto 16px 20px 16px;display:flex;justify-content:space-between;align-items:flex-end;gap:12px;color:#fff;z-index:2;flex-wrap:wrap}
+.fld{display:flex;flex-direction:column;gap:8px}
+.fld label{font-size:14px;font-weight:500}
+.fld input,.fld select,.fld textarea{min-height:48px;border:1px solid #DCD5CC;border-radius:2px;background:#fff;padding:12px 16px;font:16px/1.4 "Inter",sans-serif;color:#292724}
+.fld textarea{min-height:104px;resize:vertical}
+.dk a{color:#EDE8E1}.dk a:hover{color:#fff}
+.fab{position:fixed;right:16px;bottom:16px;z-index:40;box-shadow:0 4px 20px rgba(41,39,36,.18)}
+.ctc{display:grid;grid-template-columns:minmax(0,1fr);gap:48px}
+.pc{background:none;border:0;padding:0;font:inherit;text-align:left;cursor:pointer;width:100%}
+.cinfo{display:grid;grid-template-columns:minmax(0,1fr);gap:28px}
+.mdl-wrap{position:fixed;inset:0;z-index:60;display:flex;align-items:flex-end;justify-content:center}
+.mdl-bg{position:absolute;inset:0;background:rgba(41,39,36,.55);animation:mfade 240ms cubic-bezier(.22,1,.36,1)}
+.mdl{position:relative;background:#F7F5F1;color:#292724;width:100%;max-height:92vh;overflow:auto;border-radius:8px 8px 0 0;display:grid;grid-template-columns:minmax(0,1fr);box-shadow:0 16px 48px rgba(41,39,36,.12);animation:mrise 240ms cubic-bezier(.22,1,.36,1)}
+.mdl-img{position:relative;aspect-ratio:16/9;background:#fff;overflow:hidden}
+.mdl-img .ph-img{top:0;height:100%}
+.mdl-body{padding:24px 20px 28px}
+.mdl-x{position:absolute;top:8px;right:8px;z-index:3;width:44px;height:44px;border-radius:999px;border:0;background:rgba(247,245,241,.92);color:#292724;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.mdl-x:focus-visible{outline:2px solid #292724;outline-offset:3px}
+@keyframes mfade{from{opacity:0}to{opacity:1}}
+@keyframes mrise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media(min-width:768px){.cinfo{grid-template-columns:repeat(3,minmax(0,1fr))}.mdl-wrap{align-items:center;padding:32px}.mdl{max-width:960px;border-radius:8px;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.mdl-img{aspect-ratio:auto;min-height:100%}.mdl-body{padding:48px 40px}}
+@media(prefers-reduced-motion:reduce){.mdl,.mdl-bg{animation:none}}
+@media(min-width:768px){
+ .wrap{padding-inline:32px}.bleed{padding-inline:12px}.sec{padding-block:80px}
+ .nv{top:24px;left:28px;right:28px}
+ .hero{aspect-ratio:16/10}.full{aspect-ratio:16/10}.full2{aspect-ratio:16/9}
+ .pgrid{grid-template-columns:repeat(4,minmax(0,1fr));gap:40px 20px}
+ .two{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+ .man{grid-template-columns:repeat(2,minmax(0,1fr));gap:48px 32px}
+ .svc>div{grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:32px}
+ .tech{padding:40px}
+ .gal .ph{aspect-ratio:16/10}
+ .ov{inset:auto 32px 32px 32px}
+ .fab{right:24px;bottom:24px}
+}
+@media(min-width:1024px){
+ .wrap{padding-inline:64px}.sec{padding-block:96px}.sec-xl{padding-block:128px}
+ .hero{aspect-ratio:16/9}.full{aspect-ratio:16/9}.full2{aspect-ratio:21/9}
+ .collage{gap:24px}
+ .man{grid-template-columns:repeat(4,minmax(0,1fr))}
+ .ctc{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px}
+ .tech{padding:56px}
+ .gal .ph{aspect-ratio:16/9}
+}
+@media(prefers-reduced-motion:reduce){.ph-in,.btn{transition:none}.hover-z:hover .ph-in,.pc:hover .ph-in{transform:none}}
+</style>
+<style>
+.mdl-wrap[hidden],[hidden]{display:none !important}
+.proto{position:relative;z-index:50;background:#292724;color:#EDE8E1;font:500 12px/1.4 "Inter",sans-serif;text-align:center;padding:8px 16px}
+.proto a{color:#fff}
+</style>
+</head>
+<body>
+<div class="proto" role="note">Protótipo de redesign — não é o site oficial da Ilustre Móveis. Site oficial: <a href="https://www.ilustre.com.br/">ilustre.com.br</a></div>
+<div style="position: relative">
+
+
+<a class="btn btn-p fab" href="#colecao">Solicitar orçamento</a>
+
+<main id="topo" style="position: relative; z-index: 1">
+
+<!-- 1 · Abertura -->
+<section class="bleed" style="padding-top: 8px">
+ <div class="ph hero" data-hero-img style="border-radius: 2px">
+  <img class="ph-img" data-zoom src="assets/sofa-retratil.jpg" alt="Sofá retrátil em couro verde-oliva em sala com painel de madeira e tapete redondo" style="top: 0; height: 100%; object-position: 50% 60%">
+  <div class="shade"></div>
+  <header class="nv">
+   <a href="#topo" style="font-family: Manrope, sans-serif; font-size: 18px; font-weight: 500; letter-spacing: -0.03em">Ilustre Móveis</a>
+   <nav class="nv-links" aria-label="Principal">
+    <a href="#colecao">Coleção</a><span class="nv-sep" aria-hidden="true">|</span>
+    <a href="#servicos">Serviços</a><span class="nv-sep" aria-hidden="true">|</span>
+    <a href="#sobre">Sobre</a><span class="nv-sep" aria-hidden="true">|</span>
+    <a href="#contato">Contato</a>
+   </nav>
+  </header>
+ </div>
+</section>
+
+<!-- 2 · Assinatura + posicionamento -->
+<section class="bleed" style="padding-top: 24px; padding-bottom: 64px; overflow: hidden">
+ <h1 class="mark" data-mark aria-label="Ilustre Móveis — design autoral desde 1991"><span>ILUSTRE</span><sup>móveis</sup></h1>
+ <div class="wrap" style="padding-top: 48px; display: flex; flex-direction: column; gap: 32px; align-items: flex-start">
+  <p class="lead col" data-rv style="margin: 0">Desde 1991, em São Paulo, mobiliário com <em>permanência estética</em> e rigor construtivo. Peças autorais do IM Design Studio, para sonhar e viver a casa.</p>
+  <div data-rv style="display: flex; flex-wrap: wrap; gap: 12px">
+   <a class="btn btn-p" href="#colecao">Explore a coleção</a>
+   <a class="btn btn-s" href="#colecao">Solicitar orçamento</a>
+  </div>
+ </div>
+</section>
+
+<!-- 3 · Fotos inteiras: produto e detalhe -->
+<section class="bleed" style="display: flex; flex-direction: column; gap: 8px">
+ <div class="ph full" data-rv style="background: #1E1C1A">
+  <img class="ph-img" src="assets/poltronas-curvas.jpg" alt="Duas poltronas em lâmina de madeira curvada, uma estofada em branco, com pufe e mesa lateral" loading="lazy">
+ </div>
+ <div class="two">
+  <div class="ph hover-z" data-rv><img class="ph-img" src="assets/poltrona-laminas.jpg" alt="Poltrona e mesa lateral em lâminas de madeira sobrepostas" loading="lazy"></div>
+  <div class="ph hover-z" data-rv><img class="ph-img" src="assets/mesa-ambiente.jpg" alt="Base cônica em madeira de mesa redonda com cadeiras estofadas" loading="lazy"></div>
+ </div>
+</section>
+
+<!-- 4 · Produto protagonista -->
+<section class="sec sec-xl" style="overflow: hidden">
+ <div class="wrap">
+  <h2 class="model" data-mark aria-label="Sofá Loom, retrátil"><span>loom<sup>retrátil</sup></span></h2>
+  <div class="col" style="padding-top: 48px; display: flex; flex-direction: column; gap: 20px" data-rv>
+   <p style="margin: 0">O <strong>Sofá Loom</strong> une conforto e função em um desenho retrátil, nas versões <strong>manual</strong> ou <strong>automatizada</strong>.</p>
+   <p class="muted" style="margin: 0">Os braços volumosos e macios também servem de apoio para a nuca, ampliando os jeitos de usar o sofá sem quebrar a fluidez do desenho.</p>
+   <p class="muted" style="margin: 0">Estrutura em compensado naval e assento em camadas de espuma visco-elástica, pensado para durar tanto quanto a casa.</p>
+   <p style="margin: 0">Feito para ser vivido todos os dias.</p>
+   <a class="lk" href="#ficha">Ver informações técnicas <span aria-hidden="true">→</span></a>
+  </div>
+ </div>
+</section>
+
+<!-- 6 · Destaques da coleção -->
+<section id="colecao" class="wrap" style="padding-bottom: 96px">
+ <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px; padding-bottom: 48px" data-rv>
+  <div class="col" style="display: flex; flex-direction: column; gap: 16px">
+   <h2 style="font-size: 20px; font-weight: 500; letter-spacing: -0.02em">Destaques da coleção</h2>
+   <p class="muted" style="margin: 0">Sofás, poltronas, cadeiras e carros bar com desenho próprio, proporção cuidadosa e respeito à arquitetura de cada espaço.</p>
+  </div>
+  <div class="cats">
+   <a class="btn btn-s" href="https://www.ilustre.com.br/produtos/nossos-produtos/sofas">Sofás</a>
+   <a class="btn btn-s" href="https://www.ilustre.com.br/produtos/nossos-produtos/poltronas">Poltronas</a>
+   <a class="btn btn-s" href="https://www.ilustre.com.br/produtos/nossos-produtos/cadeiras">Cadeiras</a>
+  </div>
+ </div>
+ <div class="pgrid" data-stagger>
+  
+   <button class="pc" type="button" data-click="p.open" data-index="0" aria-haspopup="dialog">
+    <div class="ph" style="background: #fff"><img class="ph-img" src="assets/sofa-retratil.jpg" alt="Sofá retrátil em couro verde-oliva" loading="lazy"></div>
+    <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 500">Sofá retrátil</span><span class="small muted">Couro · acionamento elétrico</span></span>
+    <span class="lk" style="margin-top: 6px">Solicitar orçamento <span aria-hidden="true">→</span></span>
+   </button>
+  
+   <button class="pc" type="button" data-click="p.open" data-index="1" aria-haspopup="dialog">
+    <div class="ph" style="background: #fff"><img class="ph-img" src="assets/poltronas-curvas.jpg" alt="Poltronas em lâmina de madeira curvada com pufe" loading="lazy"></div>
+    <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 500">Poltronas em madeira curvada</span><span class="small muted">Poltrona e pufe · lâmina natural</span></span>
+    <span class="lk" style="margin-top: 6px">Solicitar orçamento <span aria-hidden="true">→</span></span>
+   </button>
+  
+   <button class="pc" type="button" data-click="p.open" data-index="2" aria-haspopup="dialog">
+    <div class="ph" style="background: #fff"><img class="ph-img ct" src="assets/mesa-redonda.jpg" alt="Mesa redonda em madeira com quatro pés esculpidos" loading="lazy"></div>
+    <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 500">Mesa redonda</span><span class="small muted">Mesa de jantar · pés esculpidos em madeira</span></span>
+    <span class="lk" style="margin-top: 6px">Solicitar orçamento <span aria-hidden="true">→</span></span>
+   </button>
+  
+   <button class="pc" type="button" data-click="p.open" data-index="3" aria-haspopup="dialog">
+    <div class="ph" style="background: #fff"><img class="ph-img ct" src="assets/mesa-cadeiras.jpg" alt="Mesa redonda de base cônica em madeira com três cadeiras estofadas" loading="lazy"></div>
+    <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 500">Mesa com base cônica</span><span class="small muted">Mesa e cadeiras giratórias</span></span>
+    <span class="lk" style="margin-top: 6px">Solicitar orçamento <span aria-hidden="true">→</span></span>
+   </button>
+  
+ </div>
+</section>
+
+<!-- 8 · Manifesto -->
+<section id="sobre" class="sec sec-xl">
+ <div class="wrap">
+  <div data-rv style="display: flex; flex-direction: column; gap: 20px; padding-bottom: 56px">
+   <p class="label muted" style="margin: 0">Manifesto</p>
+   <h2 class="h2" style="max-width: 22ch">A casa é para onde sempre voltamos.</h2>
+   <p class="muted col" style="margin: 0">Fundada em 1991, a Ilustre consolidou cinco lojas na capital paulista. Em 2021 nasceu o IM Design Studio, braço autoral que desenvolve as peças próprias da marca.</p>
+  </div>
+  <div class="man" data-stagger>
+   
+    <div style="display: flex; flex-direction: column; gap: 12px; padding-top: 20px; border-top: 1px solid #292724">
+     <span class="small muted">I</span>
+     <h3 style="font-size: 22px; font-weight: 500; letter-spacing: -0.02em">A virtude da casa</h3>
+     <p class="muted small" style="margin: 0">Tudo passa — o carro, a roupa, a viagem. A casa é para onde sempre voltamos.</p>
+    </div>
+   
+    <div style="display: flex; flex-direction: column; gap: 12px; padding-top: 20px; border-top: 1px solid #292724">
+     <span class="small muted">II</span>
+     <h3 style="font-size: 22px; font-weight: 500; letter-spacing: -0.02em">O encantamento</h3>
+     <p class="muted small" style="margin: 0">Acolhimento e sofisticação juntos. Luxo sem excessos, mas impecável.</p>
+    </div>
+   
+    <div style="display: flex; flex-direction: column; gap: 12px; padding-top: 20px; border-top: 1px solid #292724">
+     <span class="small muted">III</span>
+     <h3 style="font-size: 22px; font-weight: 500; letter-spacing: -0.02em">A autenticidade</h3>
+     <p class="muted small" style="margin: 0">Cada casa tem seu jeito de ser vivida, e cada pessoa se encontra nela.</p>
+    </div>
+   
+    <div style="display: flex; flex-direction: column; gap: 12px; padding-top: 20px; border-top: 1px solid #292724">
+     <span class="small muted">IV</span>
+     <h3 style="font-size: 22px; font-weight: 500; letter-spacing: -0.02em">A atemporalidade</h3>
+     <p class="muted small" style="margin: 0">Móveis feitos para durar, como as memórias que guardam.</p>
+    </div>
+   
+  </div>
+  <p data-rv style="margin: 64px 0 0; font-family: Manrope, sans-serif; font-size: clamp(1.875rem, 1.52rem + 1.5vw, 2.75rem); letter-spacing: -0.03em; line-height: 1.15">Para sonhar e viver a casa.</p>
+ </div>
+</section>
+
+<!-- 9 · Ficha técnica -->
+<section id="ficha" class="bleed">
+ <div style="position: relative; border-radius: 4px; overflow: hidden; background: repeating-linear-gradient(115deg, #B8B2AA 0 2px, #A9A39B 2px 5px), #B1ABA3; padding: clamp(16px, 6vw, 120px) clamp(12px, 8vw, 200px)">
+  <div class="tech" data-rv>
+   <div style="display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; border-bottom: 1px solid #292724; padding-bottom: 12px" class="label">
+    <span>Ilustre Móveis</span><span>Sofá Loom</span><span>Coleção 392</span>
+   </div>
+   <div class="ph" style="aspect-ratio: 16/9; background: #F7F5F1">
+    <div aria-hidden="true" style="position: absolute; left: 12%; right: 12%; top: 36%; height: 28%; border: 1.5px solid #292724; border-radius: 16px"></div>
+    <div aria-hidden="true" style="position: absolute; left: 12%; width: 12%; top: 26%; height: 38%; border: 1.5px solid #292724; border-radius: 30px 30px 8px 8px"></div>
+    <div aria-hidden="true" style="position: absolute; right: 12%; width: 12%; top: 26%; height: 38%; border: 1.5px solid #292724; border-radius: 30px 30px 8px 8px"></div>
+    <div aria-hidden="true" style="position: absolute; left: 12%; right: 12%; top: 74%; border-top: 1px solid #68625B"></div>
+    <span class="ph-tag">Desenho técnico · vistas e cotas</span>
+   </div>
+   <p class="model" style="font-size: clamp(2.75rem, 1.85rem + 3.8vw, 5rem); color: #292724; margin: 0"><span>loom<sup><span data-bind="versionShort">manual</span></sup></span></p>
+   <table class="spec">
+    <tbody>
+     <tr><th scope="row">Versão</th><td>
+      <div role="group" aria-label="Escolha a versão do mecanismo" style="display: flex; gap: 8px; flex-wrap: wrap">
+       
+        <button class="seg" type="button" aria-pressed="true" data-click="v.pick" data-index="0">Manual</button>
+       
+        <button class="seg" type="button" aria-pressed="false" data-click="v.pick" data-index="1">Automatizada</button>
+       
+      </div>
+     </td></tr>
+     <tr><th scope="row">Estrutura</th><td>Compensado naval.</td></tr>
+     <tr><th scope="row">Encosto</th><td>Almofadas soltas em fibra siliconada.</td></tr>
+     <tr><th scope="row">Assento</th><td>Almofadas fixas: espuma visco-elástica D33, espuma D30 média, espuma D28 extra macia e manta acrílica.</td></tr>
+     <tr><th scope="row">Acabamento</th><td>Diversas opções de cores.</td></tr>
+     <tr><th scope="row">Dimensões</th><td>Diversas opções de medidas.</td></tr>
+    </tbody>
+   </table>
+  </div>
+  <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; padding-top: 32px" data-rv>
+   <a class="btn btn-p" href="https://www.ilustre.com.br/sofa-loom/p">Baixar bloco 3D <span aria-hidden="true">↓</span></a>
+   <a class="btn btn-l" href="#colecao">Solicitar orçamento</a>
+  </div>
+  <p class="small" data-rv style="margin: 16px auto 0; text-align: center; color: #292724; max-width: 48ch">Para arquitetos: inclua as peças Ilustre no seu projeto com os blocos 3D.</p>
+ </div>
+</section>
+
+<!-- 10 · Serviços -->
+<section id="servicos" class="sec sec-xl">
+ <div class="wrap">
+  <div data-rv style="display: flex; flex-direction: column; gap: 16px; padding-bottom: 40px">
+   <p class="label muted" style="margin: 0">Serviços</p>
+   <h2 class="h2" style="max-width: 20ch">Cuidado durante toda a vida da peça.</h2>
+   <p class="muted col" style="margin: 0">Assistência técnica mesmo para peças fora de linha. Cada atendimento passa por análise técnica prévia, e eventuais custos são informados após a avaliação.</p>
+  </div>
+  <div class="svc" data-stagger>
+   
+    <div><h3 style="font-size: 20px; font-weight: 500; letter-spacing: -0.02em">Assistência técnica</h3><p class="muted" style="margin: 0; max-width: 60ch">Durante toda a vida útil do produto, inclusive para peças fora de linha.</p></div>
+   
+    <div><h3 style="font-size: 20px; font-weight: 500; letter-spacing: -0.02em">Lustração e restauração</h3><p class="muted" style="margin: 0; max-width: 60ch">Recuperação do brilho, da proteção e da aparência original de móveis de madeira, respeitando o acabamento de cada peça.</p></div>
+   
+    <div><h3 style="font-size: 20px; font-weight: 500; letter-spacing: -0.02em">Restauração de estofados</h3><p class="muted" style="margin: 0; max-width: 60ch">Ajustes estruturais, recuperação do estofamento e troca de revestimentos, preservando conforto e proporção.</p></div>
+   
+    <div><h3 style="font-size: 20px; font-weight: 500; letter-spacing: -0.02em">Proteção SofaSafe</h3><p class="muted" style="margin: 0; max-width: 60ch">Protetor de tecido contra manchas, amarelamento, mofo e ácaros, com até 12 meses de proteção seguindo as orientações de manutenção.</p></div>
+   
+    <div><h3 style="font-size: 20px; font-weight: 500; letter-spacing: -0.02em">Hidratação de couro</h3><p class="muted" style="margin: 0; max-width: 60ch">Preserva maciez, brilho e textura do couro natural e ajuda a prevenir o ressecamento.</p></div>
+   
+  </div>
+  <a class="lk" href="https://www.ilustre.com.br/institucional/servicos-oferecidos" style="margin-top: 32px">Solicitar atendimento <span aria-hidden="true">→</span></a>
+ </div>
+</section>
+
+<!-- 11 · Galeria editorial -->
+<section class="bleed" style="position: relative" aria-label="Galeria de ambientes">
+ <div class="gal" tabindex="0">
+  
+   <figure>
+    <div class="ph" style="background: #1E1C1A"><img class="ph-img" src="assets/sofa-retratil.jpg" alt="Sala com sofá retrátil em couro verde-oliva" loading="lazy" style="top: 0; height: 100%"><div class="shade-b"></div></div>
+    <figcaption class="ov">
+     <span style="font-family: Manrope, sans-serif; font-size: clamp(28px, 5vw, 64px); letter-spacing: -0.05em; line-height: 1">ILUSTRE</span>
+     <span class="label">Em casa · Vol. 1</span>
+     <span style="font-family: Manrope, sans-serif; font-size: clamp(28px, 5vw, 64px); letter-spacing: -0.05em; line-height: 1">Sala</span>
+    </figcaption>
+   </figure>
+  
+   <figure>
+    <div class="ph" style="background: #1E1C1A"><img class="ph-img" src="assets/poltronas-curvas.jpg" alt="Poltronas em madeira curvada" loading="lazy" style="top: 0; height: 100%"><div class="shade-b"></div></div>
+    <figcaption class="ov">
+     <span style="font-family: Manrope, sans-serif; font-size: clamp(28px, 5vw, 64px); letter-spacing: -0.05em; line-height: 1">ILUSTRE</span>
+     <span class="label">Em casa · Vol. 2</span>
+     <span style="font-family: Manrope, sans-serif; font-size: clamp(28px, 5vw, 64px); letter-spacing: -0.05em; line-height: 1">Estar</span>
+    </figcaption>
+   </figure>
+  
+   <figure>
+    <div class="ph" style="background: #1E1C1A"><img class="ph-img" src="assets/mesa-ambiente.jpg" alt="Mesa de jantar com base cônica em madeira" loading="lazy" style="top: 0; height: 100%"><div class="shade-b"></div></div>
+    <figcaption class="ov">
+     <span style="font-family: Manrope, sans-serif; font-size: clamp(28px, 5vw, 64px); letter-spacing: -0.05em; line-height: 1">ILUSTRE</span>
+     <span class="label">Em casa · Vol. 3</span>
+     <span style="font-family: Manrope, sans-serif; font-size: clamp(28px, 5vw, 64px); letter-spacing: -0.05em; line-height: 1">Jantar</span>
+    </figcaption>
+   </figure>
+  
+   <figure>
+    <div class="ph" style="background: #1E1C1A"><img class="ph-img" src="assets/poltrona-laminas.jpg" alt="Poltrona e mesa lateral em lâminas de madeira" loading="lazy" style="top: 0; height: 100%"><div class="shade-b"></div></div>
+    <figcaption class="ov">
+     <span style="font-family: Manrope, sans-serif; font-size: clamp(28px, 5vw, 64px); letter-spacing: -0.05em; line-height: 1">ILUSTRE</span>
+     <span class="label">Em casa · Vol. 4</span>
+     <span style="font-family: Manrope, sans-serif; font-size: clamp(28px, 5vw, 64px); letter-spacing: -0.05em; line-height: 1">Leitura</span>
+    </figcaption>
+   </figure>
+  
+ </div>
+ <div style="display: flex; justify-content: flex-end; gap: 8px; padding: 12px 4px 0">
+  <button class="btn btn-s" type="button" aria-label="Foto anterior" data-click="galPrev" style="width: 48px; padding: 0">←</button>
+  <button class="btn btn-s" type="button" aria-label="Próxima foto" data-click="galNext" style="width: 48px; padding: 0">→</button>
+ </div>
+</section>
+
+<!-- 12 · Contato -->
+<section id="contato" class="dk" style="background: #292724; color: #FFFFFF; margin-top: 64px; overflow: hidden">
+ <div class="wrap sec sec-xl ctc">
+  <div data-rv style="display: flex; flex-direction: column; gap: 32px; align-items: flex-start">
+   <h2 style="font-size: clamp(2.5rem, 1.9rem + 2.5vw, 4rem); line-height: 1.1">Contato</h2>
+   <p class="lead" style="margin: 0; color: #DCD5CC; max-width: 40ch">Visite uma de nossas lojas ou fale com a equipe. Para orçamento, escolha uma peça na coleção.</p>
+   <div style="display: flex; flex-wrap: wrap; gap: 12px">
+    <a class="btn btn-l" href="https://wa.me/5511994601276">Conversar pelo WhatsApp</a>
+    <a class="btn" href="#colecao" style="background: transparent; color: #fff; border-color: #fff">Ver coleção</a>
+   </div>
+  </div>
+  <div data-rv class="cinfo">
+   <div><p class="small" style="margin: 0 0 6px; font-weight: 500">Loja</p><p style="margin: 0; color: #EDE8E1">Av. Otto Baumgart, 500<br>São Paulo — SP<br>(11) 2252-3079<br>(11) 96469-1293</p></div>
+   <div><p class="small" style="margin: 0 0 6px; font-weight: 500">Atendimento</p><p style="margin: 0; color: #EDE8E1">(11) 3719-0101<br>WhatsApp (11) 99460-1276<br>contato@ilustre.com.br</p></div>
+   <div><p class="small" style="margin: 0 0 6px; font-weight: 500">Lojas</p><p style="margin: 0; color: #EDE8E1">Cinco lojas na capital paulista.<br>[Endereços e horários]</p></div>
+  </div>
+ </div>
+ <footer style="padding: 0 8px">
+  <nav aria-label="Rodapé" class="small" style="display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; padding-bottom: 8px">
+   <a href="#topo">Início</a><a href="#sobre">Quem somos</a><a href="#servicos">Serviços</a><a href="https://www.instagram.com/ilustremoveis/">Instagram</a>
+  </nav>
+  <p class="small" style="margin: 0; text-align: center; color: #DCD5CC; padding-bottom: 24px">Ilustre Móveis · CNPJ 65.815.433/0001-40</p>
+  <p class="mark" data-mark aria-hidden="true" style="margin: 0; color: #F7F5F1; transform: translateY(14%)"><span>ILUSTRE</span><sup>móveis</sup></p>
+ </footer>
+</section>
+
+</main>
+
+</div>
+
+<div class="mdl-wrap" id="quote" hidden>
+ <div class="mdl-bg" data-close></div>
+ <div class="mdl" role="dialog" aria-modal="true" aria-labelledby="mdl-t">
+  <button class="mdl-x" type="button" aria-label="Fechar" data-close><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+  <div class="mdl-img"><img class="ph-img" id="q-img" src="" alt=""></div>
+  <div class="mdl-body">
+   <div id="q-sent" role="status" hidden style="display: flex; flex-direction: column; gap: 16px; min-height: 280px; justify-content: center">
+    <p class="label muted" style="margin: 0" data-q="name"></p>
+    <h3 class="h3">Recebemos seu pedido.</h3>
+    <p class="muted" style="margin: 0">Protótipo: conecte este formulário ao e-mail, CRM ou WhatsApp da loja para receber os contatos.</p>
+    <button class="btn btn-p" type="button" data-close style="align-self: flex-start">Voltar à coleção</button>
+   </div>
+   <form id="q-form" style="display: flex; flex-direction: column; gap: 18px">
+    <div style="display: flex; flex-direction: column; gap: 6px">
+     <p class="label muted" style="margin: 0">Solicitar orçamento</p>
+     <h3 class="h3" id="mdl-t" data-q="name"></h3>
+     <p class="small muted" style="margin: 0" data-q="cat"></p>
+    </div>
+    <input type="hidden" name="peca" id="q-peca">
+    <div class="fld"><label for="f-nome">Nome</label><input id="f-nome" name="nome" type="text" autocomplete="name" required></div>
+    <div class="fld"><label for="f-tel">WhatsApp</label><input id="f-tel" name="tel" type="tel" autocomplete="tel" inputmode="tel" required></div>
+    <div class="fld"><label for="f-msg">Mensagem <span class="muted" style="font-weight: 400">(opcional)</span></label><textarea id="f-msg" name="msg"></textarea><span class="small muted">Medidas do ambiente e cores desejadas ajudam no orçamento.</span></div>
+    <button class="btn btn-p" type="submit" style="width: 100%">Enviar pedido de orçamento</button>
+   </form>
+  </div>
+ </div>
+</div>
+<script src="assets/gsap.min.js"></script>
+<script src="assets/ScrollTrigger.min.js"></script>
+<script>
+(function () {
+  var CARDS = [{"name":"Sofá retrátil","cat":"Couro · acionamento elétrico","url":"https://www.ilustre.com.br/produtos/nossos-produtos/sofas","cls":"ph-img","img":"/_blob/eb8de350cfd2cd2e529b9cf5e3300928","alt":"Sofá retrátil em couro verde-oliva"},{"name":"Poltronas em madeira curvada","cat":"Poltrona e pufe · lâmina natural","url":"https://www.ilustre.com.br/produtos/nossos-produtos/poltronas","cls":"ph-img","img":"/_blob/7698663603e24f4ef009bf116a805bc7","alt":"Poltronas em lâmina de madeira curvada com pufe"},{"name":"Mesa redonda","cat":"Mesa de jantar · pés esculpidos em madeira","url":"https://www.ilustre.com.br/","cls":"ph-img ct","img":"/_blob/1b55b379dc647580cb5d3ff849b34997","alt":"Mesa redonda em madeira com quatro pés esculpidos"},{"name":"Mesa com base cônica","cat":"Mesa e cadeiras giratórias","url":"https://www.ilustre.com.br/produtos/nossos-produtos/cadeiras","cls":"ph-img ct","img":"/_blob/683ea508edeb723ae6e4dea0096a9e0d","alt":"Mesa redonda de base cônica em madeira com três cadeiras estofadas"}];
+  var BLOB = {"/_blob/eb8de350cfd2cd2e529b9cf5e3300928":"assets/sofa-retratil.jpg","/_blob/7698663603e24f4ef009bf116a805bc7":"assets/poltronas-curvas.jpg","/_blob/874648ae38df340140fbda865378df43":"assets/poltrona-laminas.jpg","/_blob/1b55b379dc647580cb5d3ff849b34997":"assets/mesa-redonda.jpg","/_blob/683ea508edeb723ae6e4dea0096a9e0d":"assets/mesa-cadeiras.jpg","/_blob/31efb9bdd2c6a96f5dc06a1291ef187a":"assets/mesa-ambiente.jpg"};
+  CARDS.forEach(function (c) { if (BLOB[c.img]) c.img = BLOB[c.img]; });
+  var VERSIONS = [{"name":"Manual","short":"manual"},{"name":"Automatizada","short":"automatizado"}];
+
+  function initMotion() {
+    const g = window.gsap, ST = window.ScrollTrigger;
+    if (!g || !ST) return;
+    g.registerPlugin(ST);
+    const ease = 'power4.out';
+    window.__mm = g.matchMedia();
+    window.__mm.add({
+      desk: '(min-width: 768px) and (prefers-reduced-motion: no-preference)',
+      mob: '(max-width: 767px) and (prefers-reduced-motion: no-preference)'
+    }, (ctx) => {
+      const mob = ctx.conditions.mob, y = mob ? 16 : 24;
+      // Harper Ave (observado): imagem de abertura assenta de scale 1.05 para 1 em 0.8s, ease [0.44,0,0.56,1]
+      g.fromTo('[data-zoom]', { scale: 1.05 }, { scale: 1, duration: 0.8, ease: 'power1.inOut' });
+      // links do menu: opacidade + x -10px, 0.8s, atrasos de 0.2s a 0.6s
+      g.from('.nv a', { opacity: 0, x: -10, duration: 0.8, ease: 'power1.inOut', delay: 0.2, stagger: { each: 0.1, from: 'start' } });
+      // assinatura gigante: opacidade + y 100px, 0.6s
+      g.utils.toArray('[data-mark]').forEach((el) => {
+        g.from(el.children, { opacity: 0, y: 100, duration: 0.6, ease: 'power1.inOut', stagger: 0.08, scrollTrigger: { trigger: el, start: 'top 95%', once: true } });
+      });
+      // botão fixo de orçamento: opacidade + y 20px, mola curta, atraso 0.6s
+      g.from('.fab', { opacity: 0, y: 20, duration: 0.5, ease: 'back.out(1.4)', delay: 0.6 });
+      // revelação de conteúdo do site: 600ms, 16-24px, stagger 80ms limitado a 4
+      g.utils.toArray('[data-rv]').forEach((el) => {
+        g.from(el, { opacity: 0, y, duration: 0.6, ease, scrollTrigger: { trigger: el, start: 'top 85%', once: true } });
+      });
+      g.utils.toArray('[data-stagger]').forEach((grid) => {
+        const items = Array.from(grid.children).filter((c) => c.nodeType === 1);
+        g.from(items, { opacity: 0, y, duration: 0.6, ease, stagger: (i) => Math.min(i, 3) * 0.08, scrollTrigger: { trigger: grid, start: 'top 85%', once: true } });
+      });
+    });
+    const refresh = () => ST.refresh();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(refresh);
+    window.addEventListener('load', refresh, { once: true });
+  }
+
+  // versão do Loom (manual / automatizada)
+  function setVer(i) {
+    document.querySelectorAll('[data-click="v.pick"]').forEach(function (b) { b.setAttribute('aria-pressed', String(Number(b.dataset.index) === i)); });
+    document.querySelectorAll('[data-bind="versionShort"]').forEach(function (el) { el.textContent = VERSIONS[i].short; });
+  }
+
+  // galeria
+  var gal = document.querySelector('.gal');
+  function galStep(d) { if (gal) gal.scrollBy({ left: d * gal.clientWidth, behavior: 'smooth' }); }
+  if (gal) gal.addEventListener('keydown', function (e) { if (e.key === 'ArrowRight') { e.preventDefault(); galStep(1); } if (e.key === 'ArrowLeft') { e.preventDefault(); galStep(-1); } });
+
+  // janela de orçamento
+  var wrap = document.getElementById('quote'), form = document.getElementById('q-form'), sent = document.getElementById('q-sent'), opener = null;
+  function openQuote(i) {
+    var c = CARDS[i]; opener = document.activeElement;
+    var img = document.getElementById('q-img'); img.src = c.img; img.alt = c.alt; img.className = c.cls;
+    wrap.querySelectorAll('[data-q]').forEach(function (el) { el.textContent = c[el.dataset.q]; });
+    document.getElementById('q-peca').value = c.name;
+    form.reset(); form.hidden = false; sent.hidden = true;
+    wrap.hidden = false; document.body.style.overflow = 'hidden';
+    setTimeout(function () { document.getElementById('f-nome').focus(); }, 30);
+  }
+  function closeQuote() { wrap.hidden = true; document.body.style.overflow = ''; if (opener && opener.focus) opener.focus(); }
+  form.addEventListener('submit', function (e) { e.preventDefault(); form.hidden = true; sent.hidden = false; sent.querySelector('button').focus(); });
+  wrap.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closeQuote(); return; }
+    if (e.key !== 'Tab') return;
+    var els = Array.prototype.filter.call(wrap.querySelectorAll('button, input:not([type=hidden]), textarea, a[href]'), function (el) { return el.offsetParent !== null; });
+    if (!els.length) return; var first = els[0], last = els[els.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest('[data-click], [data-close]'); if (!t) return;
+    if (t.hasAttribute('data-close')) { closeQuote(); return; }
+    var a = t.dataset.click, i = Number(t.dataset.index);
+    if (a === 'p.open') openQuote(i);
+    else if (a === 'v.pick') setVer(i);
+    else if (a === 'galPrev') galStep(-1);
+    else if (a === 'galNext') galStep(1);
+  });
+
+  initMotion();
+})();</script>
+</body>
+</html>
